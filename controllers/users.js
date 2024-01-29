@@ -12,8 +12,8 @@ const getAllUsers = (req, res) => {
 
 const getUserById = (req, res) => {
   // SELECT USERS WHERE ID = <REQ PARAMS ID>
-  let sql = "QUERY GOES HERE"
-  // WHAT GOES IN THE BRACKETS
+  let sql = 'SELECT * FROM ?? WHERE ?? = ?'
+  const replacements = ['users', 'id', req.params.id]
   sql = mysql.format(sql, [])
 
   pool.query(sql, (err, rows) => {
@@ -24,8 +24,9 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   // INSERT INTO USERS FIRST AND LAST NAME 
-  let sql = "QUERY GOES HERE"
-  // WHAT GOES IN THE BRACKETS
+  let sql = 'INSERT INTO ?? (??, ??) VALUES (??, ??)'
+  const replacements = ['users', 'first_name', 'last_name', ...req.body]
+  
   sql = mysql.format(sql, [])
 
   pool.query(sql, (err, results) => {
