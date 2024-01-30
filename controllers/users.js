@@ -24,14 +24,13 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   // INSERT INTO USERS FIRST AND LAST NAME 
-  let sql = 'INSERT INTO ?? (??, ??) VALUES (??, ??)'
+  let sql = 'INSERT INTO ?? (??, ??) VALUES (?, ?)'
   const replacements = ['users', 'first_name', 'last_name', req.body.first_name, req.body.last_name]
   
   sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
-    // I don't understand this next line...
     return res.json({ newId: results.insertId });
   })
 }
@@ -39,10 +38,8 @@ const createUser = (req, res) => {
 const updateUserById = (req, res) => {
   // UPDATE USERS AND SET FIRST AND LAST NAME WHERE ID = <REQ PARAMS ID>
   const selectedUserId = req.params.id;
-  const selectedUser = users.find(user => user.id = selectedUserId);
- 
-  let sql = "UPDATE ?? SET ?? WHERE ?? = ?"
-  const replacements = ['users',req.body, 'id', selectedUserId]
+  let sql = "UPDATE ?? SET ?? = ?, ?? = ?  WHERE ?? = ?"
+  const replacements = ['users', 'first_name', req.body.first_name, 'last_name', req.body.last_name, 'id', selectedUserId]
   sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
@@ -53,8 +50,8 @@ const updateUserById = (req, res) => {
 
 const deleteUserByFirstName = (req, res) => {
   // DELETE FROM USERS WHERE FIRST NAME = <REQ PARAMS FIRST_NAME>
-  let sql = "DELETE FROM ?? WHERE ?? = ??"
-  const replacements = [users, 'first_name', req.params.first_name]
+  let sql = "DELETE FROM ?? WHERE ?? = ?"
+  const replacements = ['users', 'first_name', req.params.first_name]
   sql = mysql.format(sql, replacements);
 
   pool.query(sql, (err, results) => {
