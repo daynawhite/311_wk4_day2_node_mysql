@@ -24,7 +24,6 @@ const getUserById = (req, res) => {
 
 const createUser = (req, res) => {
   // INSERT INTO USERS FIRST AND LAST NAME 
-
   let sql = 'INSERT INTO ?? (??, ??) VALUES (??, ??)'
   const replacements = ['users', 'first_name', 'last_name', req.body.first_name, req.body.last_name]
   
@@ -42,8 +41,8 @@ const updateUserById = (req, res) => {
   const selectedUserId = req.params.id;
   const selectedUser = users.find(user => user.id = selectedUserId);
  
-  let sql = "UPDATE users SET ?? WHERE ?? = ?"
-  const replacements = [req.body, 'id', selectedUserId]
+  let sql = "UPDATE ?? SET ?? WHERE ?? = ?"
+  const replacements = ['users',req.body, 'id', selectedUserId]
   sql = mysql.format(sql, replacements)
 
   pool.query(sql, (err, results) => {
